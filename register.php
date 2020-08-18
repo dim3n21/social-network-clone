@@ -14,7 +14,7 @@
     $password       =   "";
     $password2      =   "";
     $date           =   ""; // sign up date
-    $error_array    =   ""; // holds error messages
+    $error_array    =   array(); // holds error messages
 
     if(isset($_POST['register_button'])) {
         $fname = strip_tags($_POST['reg_fname']);   // remove html tags from the input
@@ -53,31 +53,31 @@
                 // check the number of rows
                 $num_rows = mysqli_num_rows($e_check);
                 if ($num_rows > 0) {
-                    echo "Email is already in use";
+                    array_push($error_array, "Email is already in use<br>");
                 }
             } else {
-                echo "Invalid format";
+                array_push($error_array, "Invalid format</br>");
             }
         } else {
-            echo "Emails don't match";
+            array_push($error_array, "Emails don't match<br>");
         }
 
         // validate form
         if (strlen($fname) > 25 || strlen($fname) < 2) {
-            echo "Your first name must be btwn 2 and 25 characters";
+            array_push($error_array, "Your first name must be btwn 2 and 25 characters<br>");
         }
         if (strlen($lname) > 25 || strlen($lname) < 2) {
-            echo "Your last name must be btwn 2 and 25 characters";
+            array_push($error_array, "Your last name must be btwn 2 and 25 characters<br>");
         }
         if ($password != $password2) {
-            echo "Your passwords don't match";
+            array_push($error_array, "Your passwords don't match<br>");
         } else {
             if (preg_match('/[^A-Za-z0-9]/', $password)) {
-                echo "Your password can only contain english characters or number";
+                array_push($error_array, "Your password can only contain english characters or number<br>");
             }
         }
         if (strlen($password) > 30 || strlen($lname) < 5) {
-            echo "Your last name must be btwn 2 and 25 characters";
+            array_push($error_array, "Your password must be btwn 5 and 30 characters<br>");
         }
     }
 ?>
@@ -99,6 +99,7 @@
             }
         ?>" required>
     <br>
+    <?php if(in_array("Your first name must be btwn 2 and 25 characters<br>", $error_array)) echo "Your first name must be btwn 2 and 25 characters<br>"; ?>
     <input type="text" name="reg_lname" placeholder="Last Name"
         value="<?php
             if(isset($_SESSION['reg_lname'])) {
@@ -106,6 +107,7 @@
             }
         ?>" required>
     <br>
+    <?php if(in_array("Your last name must be btwn 2 and 25 characters<br>", $error_array)) echo "Your last name must be btwn 2 and 25 characters<br>"; ?>
     <input type="email" name="reg_email" placeholder="Email"
         value="<?php
             if(isset($_SESSION['reg_email'])) {
@@ -113,6 +115,9 @@
             }
         ?>" required>
     <br>
+    <?php if(in_array("Email is already in use<br>", $error_array)) echo "Email is already in use<br>";
+        else if(in_array("Invalid format</br>", $error_array)) echo "Invalid format</br>";
+        else if(in_array("Emails don't match<br>", $error_array)) echo "Emails don't match<br>"; ?>
     <input type="email" name="reg_email2" placeholder="Confirm Email"
         value="<?php
             if(isset($_SESSION['reg_email2'])) {
@@ -122,6 +127,9 @@
     <br>
     <input type="password" name="reg_password" placeholder="Password" required>
     <br>
+    <?php if(in_array("Your password can only contain english characters or number<br>", $error_array)) echo "Your password can only contain english characters or number<br>";
+    else if(in_array("Your password must be btwn 5 and 30 characters<br>", $error_array)) echo "Your password must be btwn 5 and 30 characters<br>";
+    else if(in_array("Your passwords don't match<br>", $error_array)) echo "Your passwords don't match<br>"; ?>
     <input type="password" name="reg_password2" placeholder="Confirm Password" required>
     <br>
     <input type="submit" name="register_button" placeholder="Confirm Password" valcue="Register">
