@@ -30,12 +30,12 @@
         $em = strip_tags($_POST['reg_email']);
         $em = str_replace(' ','',$em);     
         $em = ucfirst(strtolower($em));
-        $_SESSION['reg_em'] = $em;
+        $_SESSION['reg_email'] = $em;
 
         $em2 = strip_tags($_POST['reg_email2']);
         $em2 = str_replace(' ','',$em2);     
         $em2 = ucfirst(strtolower($em2));
-        $_SESSION['reg_em2'] = $em2;
+        $_SESSION['reg_email2'] = $em2;
 
         $password = strip_tags($_POST['reg_password']);
         $password2 = strip_tags($_POST['reg_password2']);
@@ -93,7 +93,7 @@
             while(mysqli_num_rows($check_username_query) != 0) {
                 $i++;
                 $username = $username . '_' . $i;
-                $check_username_query = mysqli_query($con, "SELECT username FROM users WHERE username='$username");
+                $check_username_query = mysqli_query($con, "SELECT username FROM users WHERE username='$username") ?? 0;
             }
             
             //profile picture assignment
@@ -105,6 +105,13 @@
             }
             
             $query = mysqli_query($con, "INSERT INTO users VALUES (NULL, '$fname', '$lname', '$username', '$em', '$password', '$date', '$profile_pic', '0', '0', 'no', ',')");
+            array_push($error_array, "<span>You're all set!</span>");
+
+            // clear session variables
+            $_SESSION['reg_fname']   = "";
+            $_SESSION['reg_lname']   = "";
+            $_SESSION['reg_email']   = "";
+            $_SESSION['reg_email2']  = "";
         }
     }
 ?>
@@ -160,6 +167,8 @@
     <input type="password" name="reg_password2" placeholder="Confirm Password" required>
     <br>
     <input type="submit" name="register_button" placeholder="Confirm Password" valcue="Register">
+    <br>
+    <?php if(in_array("<span>You're all set!</span>", $error_array)) echo "<span>You're all set!</span>"; ?>
 </form>
     
 </body>
