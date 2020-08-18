@@ -76,7 +76,7 @@
                 array_push($error_array, "Your password can only contain english characters or number<br>");
             }
         }
-        if (strlen($password) > 30 || strlen($lname) < 5) {
+        if (strlen($password) > 30 || strlen($password) < 5) {
             array_push($error_array, "Your password must be btwn 5 and 30 characters<br>");
         }
 
@@ -86,7 +86,7 @@
             
             // generate username by concatenation first name and last name
             $username = strtolower($fname . "_" . $lname);
-            $check_username_query = mysqli_query($con, "SELECT username FROM users WHERE username='$username");
+            $check_username_query = mysqli_query($con, "SELECT username FROM users WHERE username='$username'") ?? 0;
             
             $i = 0;
             // if username exists add number to username
@@ -100,11 +100,11 @@
             $rand = rand(1,2);
             if ($rand == 1) {
                 $profile_pic = "assets/images/profile_pics/defaults/1.png";
-            }
-            if ($rand == 2) {
+            } else if ($rand == 2) {
                 $profile_pic = "assets/images/profile_pics/defaults/2.png";
             }
             
+            $query = mysqli_query($con, "INSERT INTO users VALUES (NULL, '$fname', '$lname', '$username', '$em', '$password', '$date', '$profile_pic', '0', '0', 'no', ',')");
         }
     }
 ?>
