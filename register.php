@@ -73,6 +73,5 @@
     <br>
     <?php if(in_array("<span>You're all set!</span>", $error_array)) echo "<span>You're all set!</span>"; ?>
 </form>
-    
 </body>
 </html>
