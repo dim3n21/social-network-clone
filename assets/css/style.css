@@ -2,3 +2,23 @@
     padding-top: 8px;
     margin-right: 40px;
 }
+
+.wrapper {
+    margin: 50px 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr ;
+}
+
+.hashtags {
+    margin-top: 50px;
+}
+
+.user-info {
+    display: grid;
+    grid-template-columns: 20% 70%;
+}
+
+.user-info-profile-pic {
+    width: 80px;
+}
